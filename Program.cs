@@ -121,10 +121,9 @@ class Player
                 TY++;
                 TX++;
             }
-
             // If we haven't found a move already then just pick the valid move that had the highest power.
             // For instance if Thor was already at center.
-            if (command == "")
+            else
             {
                 switch (moveIndex)
                 {
