@@ -121,7 +121,7 @@ class Player
                 TY++;
                 TX++;
             }
-            // If we haven't found a move already then just pick the valid move that had the highest power.
+            // If we haven't found a move already then just pick the first valid move that had the highest power.
             // For instance if Thor was already at center.
             else
             {
@@ -163,28 +163,12 @@ class Player
                         TX++;
                         TY++;
                         break;
-                    default:
-                        command = "WAIT";
+                    default: // No good runawaymoves so strike.
+                        command = "STRIKE";
                         break;
                 }
             }
-            
-            // Check if we can run away, else strike.
-            bool canRun = false;
-            foreach (bool b in runAwayMoves)
-            {
-                if (b)
-                {
-                    canRun = b;
-                }
-            }
-            if (!canRun)
-            {
-                command = "STRIKE";
-            }
-        
-    
-
+               
             // The movement or action to be carried out: WAIT STRIKE N NE E SE S SW W or N
             Console.WriteLine(command);
         }
