@@ -47,30 +47,26 @@ class Player
                 gPos.Add(g);
             }
 
-            List<bool> runAwayMoves = new List<bool>();
-            runAwayMoves = RunAway(TX, TY, gPos);
-            List<int> bestMove = new List<int>();
-            bestMove = Scan(TX, TY, gPos);
+            List<bool> runAwayMoves = RunAway(TX, TY, gPos);
+            List<int> bestMove = Scan(TX, TY, gPos);
             int power = int.MinValue;
-            int index = -1;
             int moveIndex = -1;
             List<int> goodMoves = new List<int>();
             // Finding the single best move or several if multiple moves are equally good.
-            for (int i = -1; i <= 1; i++)
+            for (int i = 0; i <= 8; i++)
             {
-                for (int j = -1; j <= 1; j++)
+                if (runAwayMoves[i] == true)
                 {
-                    index++;
-                    if (runAwayMoves[index] == true && bestMove[index] > power)
+                    if (bestMove[i] > power)
                     {
-                        moveIndex = index;
-                        power = bestMove[index];
+                        moveIndex = i;
+                        power = bestMove[i];
                         goodMoves.Clear();
-                        goodMoves.Add(index);
+                        goodMoves.Add(i);
                     }
-                    else if (runAwayMoves[index] == true && bestMove[index] == power)
+                    else if (bestMove[i] == power)
                     {
-                        goodMoves.Add(index);
+                        goodMoves.Add(i);
                     }
                 }
             }
@@ -167,8 +163,7 @@ class Player
                         command = "STRIKE";
                         break;
                 }
-            }
-               
+            }              
             // The movement or action to be carried out: WAIT STRIKE N NE E SE S SW W or N
             Console.WriteLine(command);
         }
@@ -206,12 +201,11 @@ class Player
     public static List<bool> RunAway(int tX, int tY, List<giantPos> gPos)
     {
         List<bool> moves = new List<bool>();
-        bool validMove = true;
         for (int i = -1; i <= 1; i++)
         {
             for (int j = -1; j <= 1; j++)
             {
-                validMove = true;
+                bool validMove = true;
                 foreach (giantPos gpos in gPos)
                 {
                     if (Distance(tX + j, tY + i, gpos) <= 1 || tX + j > 39 || tX + j < 0 || tY + i > 17 || tY + i < 0)
@@ -219,7 +213,6 @@ class Player
                         validMove = false;
                         break;
                     }
-
                 }
                 moves.Add(validMove); 
             }
@@ -231,8 +224,7 @@ class Player
     public static int Distance(int tx, int ty, giantPos gPos)
     {
         // They move diagonally, so only the biggest of the two x or y distances is the actual distance.
-        int distance;
-        distance = Math.Abs(tx - gPos.x);
+        int distance = Math.Abs(tx - gPos.x);
         if (distance < Math.Abs(ty - gPos.y)) return Math.Abs(ty - gPos.y);
         return distance;
     }
